@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import getTheme from "utils/theme.utils";
 
 export interface IThemeState {
   theme: TTheme;
@@ -8,7 +9,7 @@ export interface IThemeState {
 export type TTheme = "light" | "dark";
 
 const useThemeStore = create<IThemeState>((set) => ({
-  theme: "light",
+  theme: getTheme(),
   setTheme: (theme: TTheme) => set({ theme }),
 }));
 

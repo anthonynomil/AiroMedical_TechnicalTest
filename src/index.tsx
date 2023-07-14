@@ -1,8 +1,13 @@
 import { createRoot } from "react-dom/client";
-import Home from "pages/Home";
 import { StrictMode } from "react";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import useThemeStore from "store/useTheme.store";
+import { RouterProvider } from "react-router-dom";
+import router from "router";
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
 
 const root = createRoot(document.getElementById("root")!);
 
@@ -19,7 +24,7 @@ const Root = () => {
     <StrictMode>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Home />
+        <RouterProvider router={router} />
       </ThemeProvider>
     </StrictMode>
   );
