@@ -1,26 +1,57 @@
 import { TBeer } from "types/Beer.type";
 import { create } from "zustand";
 
-export interface IBeersState {
+export interface IBeersStore {
+  totalBeers: TBeer[];
   beers: TBeer[];
+  selectedBeers: TBeer[];
+
   setBeers: (beers: TBeer[]) => void;
   addBeers: (beers: TBeer[]) => void;
-  removeBeer: (beerId: number) => void;
-  removeBeers: (beersIds: number[]) => void;
+  toggleSelectedBeer: (beer: TBeer) => void;
+  clearSelectedBeers: () => void;
+  deleteBeers: (beers: TBeer[]) => void;
+  removeDuplicates: () => void;
 }
 
-const useBeersStore = create<IBeersState>((set) => ({
+const useBeersStore = create<IBeersStore>((set) => ({
+  totalBeers: [],
   beers: [],
-  setBeers: (beers: TBeer[]) => set({ beers }),
-  addBeers: (beers: TBeer[]) =>
-    set((state) => ({ beers: [...state.beers, ...beers] })),
-  removeBeer: (beerId: number) =>
+  selectedBeers: [],
+
+  setBeers: (beers: TBeer[]) =>
     set((state) => ({
-      beers: state.beers.filter((beer) => beer.id !== beerId),
+      totalBeers: beers,
+      beers: state.totalBeers.slice(0, 15),
     })),
-  removeBeers: (beersIds: number[]) =>
+  addBeers: (beers: TBeer[]) =>
     set((state) => ({
-      beers: state.beers.filter((beer) => !beersIds.includes(beer.id)),
+      totalBeers: [...state.totalBeers, ...beers],
+      beers: [...state.beers, ...beers],
+    })),
+  toggleSelectedBeer: (beer: TBeer) =>
+    set((state) => ({
+      selectedBeers: state.selectedBeers.includes(beer)
+        ? state.selectedBeers.filter((selectedBeer) => selectedBeer !== beer)
+        : [...state.selectedBeers, beer],
+    })),
+  clearSelectedBeers: () => set({ selectedBeers: [] }),
+  deleteBeers: (beers: TBeer[]) =>
+    set((state) => ({
+      beers: state.beers.filter((beer) => !beers.includes(beer)),
+      selectedBeers: [],
+    })),
+  // This is only when Strict mode is enabled
+  removeDuplicates: () =>
+    set((state) => ({
+      totalBeers: state.totalBeers.filter(
+        (beer, index, self) =>
+          self.findIndex((b) => b.id === beer.id) === index,
+      ),
+      beers: state.beers.filter(
+        (beer, index, self) =>
+          self.findIndex((b) => b.id === beer.id) === index,
+      ),
     })),
 }));
 
