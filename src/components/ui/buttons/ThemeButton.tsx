@@ -1,6 +1,13 @@
-import useThemeStore, { TTheme } from "store/useTheme.store";
-import { IconButton } from "@mui/material";
-import { Brightness4Rounded, Brightness7Rounded } from "@mui/icons-material";
+import useThemeStore, {TTheme} from "store/useTheme.store";
+import {IconButton} from "@mui/material";
+import {Brightness4Rounded, Brightness7Rounded} from "@mui/icons-material";
+
+/**
+ * ThemeButton
+ *
+ * @description ThemeButton is a button that toggles the theme of the app.
+ * @returns {JSX.Element} ThemeButton
+ */
 
 const ThemeButton = () => {
   const theme: TTheme = useThemeStore((state: { theme: any }) => state.theme);

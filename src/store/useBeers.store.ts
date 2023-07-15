@@ -13,6 +13,21 @@ export interface IBeersStore {
   deleteBeers: (beers: TBeer[]) => void;
 }
 
+/**
+ * Beers store
+ *
+ * @description
+ *  - `totalBeers` - all beers
+ *  - `beers` - beers to display
+ *  - `selectedBeers` - selected beers
+ *  - `setBeers` - set beers
+ *  - `addBeers` - add beers
+ *  - `toggleSelectedBeer` - toggle selected beer
+ *  - `clearSelectedBeers` - clear selected beers
+ *  - `deleteBeers` - delete beers
+ *
+ */
+
 const useBeersStore = create<IBeersStore>((set) => ({
   totalBeers: [],
   beers: [],

@@ -1,11 +1,26 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
-import { API_URLS } from "config/api/apiUrls.config";
+import {API_URLS} from "config/api/apiUrls.config";
+
+/**
+ * @description
+ * useFetchBeers is a custom hook that fetches beers from the API.
+ * It refreshes the data when the page changes.
+ *
+ * @returns [isLoading, data, error]
+ * isLoading: boolean,
+ * data: any,
+ * error: any,
+ * endOfData: boolean
+ *
+ * @param page
+ */
 
 const useFetchBeers = (page: number) => {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState<any>(null);
+  const [endOfData, setEndOfData] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -18,6 +33,10 @@ const useFetchBeers = (page: number) => {
           },
         });
         setIsLoading(false);
+        if (response.data.length === 0) {
+          setEndOfData(true);
+          return;
+        }
         setData(response.data);
       } catch (e) {
         setError(e);
@@ -29,6 +48,6 @@ const useFetchBeers = (page: number) => {
     console.log("Re-rendered");
   }, [page]);
 
-  return [isLoading, data, error];
+  return [isLoading, data, error, endOfData];
 };
 export default useFetchBeers;

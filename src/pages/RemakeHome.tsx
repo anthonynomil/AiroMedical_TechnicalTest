@@ -88,15 +88,7 @@ const RemakeHome = () => {
           <h1>Loading...</h1>
         )}
       </Stack>
-      {selectedBeers.length > 0 && (
-        <DeleteButton
-          variant={"contained"}
-          color={"error"}
-          onClick={handleDelete}
-        >
-          Delete
-        </DeleteButton>
-      )}
+      <DeleteButton />
       {offset > 0 && (
         <button onClick={() => setOffset(offset - 15)}>Previous</button>
       )}
