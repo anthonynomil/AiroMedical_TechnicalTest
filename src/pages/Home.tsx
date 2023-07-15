@@ -1,30 +1,21 @@
 import useFetchBeers from "hooks/useFetchBeers";
 import { useEffect, useState } from "react";
 import useBeersStore from "store/useBeers.store";
-import { TBeer } from "types/Beer.type";
 import BeersLayout from "components/beer/BeersLayout";
 import FlexContainer from "components/ui/layout/FlexContainer";
 import FullBox from "components/ui/layout/FullBox";
 import Appbar from "components/ui/layout/Appbar";
-import { CircularProgress } from "@mui/material";
+import { Box, CircularProgress, IconButton, Typography } from "@mui/material";
 import DeleteButton from "components/ui/buttons/DeleteButton";
 import ClearSelectionButton from "components/ui/buttons/ClearSelectionButton";
+import CenterBox from "components/ui/layout/CenterBox";
+import { ArrowBackRounded, ArrowForwardRounded } from "@mui/icons-material";
 
 const Home = () => {
   const [page, setPage] = useState(1);
   const [isLoading, data, error, endOfData] = useFetchBeers(page);
-  const {
-    totalBeers,
-    selectedBeers,
-    beers,
-    addBeers,
-    setBeers,
-    toggleSelectedBeer,
-    deleteBeers,
-  } = useBeersStore((state) => state);
-  const [viewBeers, setViewBeers] = useState<TBeer[]>([]);
-  const [offset, setOffset] = useState(0);
-  const [viewOffset, setViewOffset] = useState(0);
+  const { beers, addBeers } = useBeersStore((state) => state);
+  const [offset, setOffset] = useState({ offset: 300, viewOffset: 0 });
 
   useEffect(() => {
     if (data) {
@@ -33,21 +24,35 @@ const Home = () => {
   }, [addBeers, data]);
 
   useEffect(() => {
-    if (beers.length !== 0) {
-      if (beers.length / (offset + 15) >= 1) {
-        setViewBeers(beers.slice(offset, offset + 15));
-      } else {
-        setPage((prev) => prev + 1);
-      }
+    if (beers.length !== 0 && beers.length / (offset.offset + 16) < 1) {
+      setPage((prev) => prev + 1);
     }
   }, [offset, beers]);
 
+  const handleOffsetBack = () => {
+    if (offset.viewOffset - 1 < 0) {
+      setOffset({ offset: offset.offset - 15, viewOffset: 2 });
+      return;
+    }
+    setOffset({ offset: offset.offset, viewOffset: offset.viewOffset - 1 });
+  };
+
+  const handleOffsetForward = () => {
+    if (offset.viewOffset + 1 > 2) {
+      setOffset({ offset: offset.offset + 15, viewOffset: 0 });
+      return;
+    }
+    setOffset({ offset: offset.offset, viewOffset: offset.viewOffset + 1 });
+  };
+
   const renderBeersLayout = (index: number) => {
+    let sliceBegin = offset.offset + index * 5;
+    let sliceEnd = sliceBegin + 5;
     return (
       <BeersLayout
         key={index}
-        beers={viewBeers.slice(index, index + 5)}
-        isShown={index === viewOffset}
+        beers={beers.slice(sliceBegin, sliceEnd)}
+        isShown={index === offset.viewOffset}
       />
     );
   };
@@ -57,7 +62,24 @@ const Home = () => {
       <FullBox>
         <Appbar />
         <FlexContainer sx={{ mt: 5 }}>
-          <CircularProgress />
+          <CenterBox>
+            <CircularProgress />
+          </CenterBox>
+        </FlexContainer>
+      </FullBox>
+    );
+  }
+
+  if (error) {
+    return (
+      <FullBox>
+        <Appbar />
+        <FlexContainer sx={{ mt: 5 }}>
+          <CenterBox>
+            <Typography variant={"h5"} color={"error"}>
+              An error has occurred, please try again later...
+            </Typography>
+          </CenterBox>
         </FlexContainer>
       </FullBox>
     );
@@ -71,6 +93,28 @@ const Home = () => {
         {renderBeersLayout(1)}
         {renderBeersLayout(2)}
       </FlexContainer>
+      <Box
+        width={"80%"}
+        mb={3}
+        mx={"auto"}
+        display={"flex"}
+        justifyContent={"space-between"}
+      >
+        {offset.offset !== 0 || offset.viewOffset !== 0 ? (
+          <IconButton onClick={handleOffsetBack}>
+            <ArrowBackRounded />
+          </IconButton>
+        ) : (
+          <Box />
+        )}
+        {!endOfData ? (
+          <IconButton onClick={handleOffsetForward}>
+            <ArrowForwardRounded />
+          </IconButton>
+        ) : (
+          <Box />
+        )}
+      </Box>
       <DeleteButton />
       <ClearSelectionButton />
     </FullBox>
