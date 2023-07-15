@@ -9,6 +9,13 @@ const AppBarBox = styled(Box)`
   padding: 0 1rem;
 `;
 
+/**
+ * Appbar
+ * @description Appbar is the top bar of the app.
+ * @returns {JSX.Element} Appbar
+ * @constructor
+ */
+
 const Appbar = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>

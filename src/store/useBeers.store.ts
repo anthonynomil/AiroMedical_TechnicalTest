@@ -1,27 +1,42 @@
 import { TBeer } from "types/Beer.type";
 import { create } from "zustand";
 
-export interface IBeersState {
+export interface IBeersStore {
   beers: TBeer[];
-  setBeers: (beers: TBeer[]) => void;
+  selectedBeers: TBeer[];
+
   addBeers: (beers: TBeer[]) => void;
-  removeBeer: (beerId: number) => void;
-  removeBeers: (beersIds: number[]) => void;
+  toggleSelectedBeer: (beer: TBeer) => void;
+  clearSelectedBeers: () => void;
 }
 
-const useBeersStore = create<IBeersState>((set) => ({
+/**
+ * Beers store
+ *
+ * @description
+ *  - `beers` - beers to display
+ *  - `selectedBeers` - selected beers
+ *  - `addBeers` - add beers
+ *  - `toggleSelectedBeer` - toggle selected beer
+ *  - `clearSelectedBeers` - clear selected beers
+ *
+ */
+
+const useBeersStore = create<IBeersStore>((set) => ({
   beers: [],
-  setBeers: (beers: TBeer[]) => set({ beers }),
+  selectedBeers: [],
+
   addBeers: (beers: TBeer[]) =>
-    set((state) => ({ beers: [...state.beers, ...beers] })),
-  removeBeer: (beerId: number) =>
     set((state) => ({
-      beers: state.beers.filter((beer) => beer.id !== beerId),
+      beers: [...state.beers, ...beers],
     })),
-  removeBeers: (beersIds: number[]) =>
+  toggleSelectedBeer: (beer: TBeer) =>
     set((state) => ({
-      beers: state.beers.filter((beer) => !beersIds.includes(beer.id)),
+      selectedBeers: state.selectedBeers.includes(beer)
+        ? state.selectedBeers.filter((selectedBeer) => selectedBeer !== beer)
+        : [...state.selectedBeers, beer],
     })),
+  clearSelectedBeers: () => set({ selectedBeers: [] }),
 }));
 
 export default useBeersStore;
