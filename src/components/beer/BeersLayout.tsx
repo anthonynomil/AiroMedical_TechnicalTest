@@ -12,22 +12,15 @@ import Grid2 from "@mui/material/Unstable_Grid2";
  * @constructor
  */
 
-const BeersLayout = ({
-  beers,
-  isShown,
-}: {
+type TBeersLayoutProps = {
   beers: TBeer[];
-  isShown?: boolean;
-}) => {
+};
+
+const BeersLayout = ({ beers }: TBeersLayoutProps) => {
   return (
-    <Grid2
-      display={isShown ? "flex" : "none"}
-      container
-      spacing={2}
-      justifyContent={"center"}
-    >
+    <Grid2 container spacing={2} justifyContent={"center"}>
       {beers.map((beer) => (
-        <Grid2 xs={6} key={beer.id}>
+        <Grid2 xs={4} key={beer.id}>
           <BeerComponent beer={beer} />
         </Grid2>
       ))}

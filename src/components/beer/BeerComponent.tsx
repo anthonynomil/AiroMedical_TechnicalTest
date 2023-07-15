@@ -63,11 +63,13 @@ const BeerComponent = ({ beer }: TBeerComponentProps) => {
         onClick={handleClick}
         onContextMenu={handleContextMenu}
       >
-        <CardContent sx={{ width: "100%", height: "100%" }}>
+        <CardContent sx={{ width: "100%", height: "100%", overflow: "scroll" }}>
           <Typography variant={"h5"} color={"primary"} gutterBottom>
             {beer.name}
           </Typography>
-          <Typography variant={"body2"}>{beer.description}</Typography>
+          <Typography variant={"body2"} overflow={"scroll"}>
+            {beer.description}
+          </Typography>
         </CardContent>
       </CardActionArea>
     </BeerCard>

@@ -23,6 +23,7 @@ const useFetchBeers = (page: number) => {
   const [endOfData, setEndOfData] = useState(false);
 
   useEffect(() => {
+    if (endOfData) return;
     (async () => {
       try {
         const response = await axios({
@@ -33,8 +34,10 @@ const useFetchBeers = (page: number) => {
           },
         });
         setIsLoading(false);
-        if (response.data.length === 0) {
+        if (response.data.length < 25) {
           setEndOfData(true);
+        }
+        if (response.data.length === 0) {
           return;
         }
         setData(response.data);
@@ -43,11 +46,6 @@ const useFetchBeers = (page: number) => {
       }
     })();
   }, [page]);
-
-  useEffect(() => {
-    console.log("Re-rendered");
-  }, [page]);
-
   return [isLoading, data, error, endOfData];
 };
 export default useFetchBeers;
