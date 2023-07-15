@@ -11,7 +11,6 @@ export interface IBeersStore {
   toggleSelectedBeer: (beer: TBeer) => void;
   clearSelectedBeers: () => void;
   deleteBeers: (beers: TBeer[]) => void;
-  removeDuplicates: () => void;
 }
 
 const useBeersStore = create<IBeersStore>((set) => ({
@@ -40,18 +39,6 @@ const useBeersStore = create<IBeersStore>((set) => ({
     set((state) => ({
       beers: state.beers.filter((beer) => !beers.includes(beer)),
       selectedBeers: [],
-    })),
-  // This is only when Strict mode is enabled
-  removeDuplicates: () =>
-    set((state) => ({
-      totalBeers: state.totalBeers.filter(
-        (beer, index, self) =>
-          self.findIndex((b) => b.id === beer.id) === index,
-      ),
-      beers: state.beers.filter(
-        (beer, index, self) =>
-          self.findIndex((b) => b.id === beer.id) === index,
-      ),
     })),
 }));
 

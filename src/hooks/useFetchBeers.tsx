@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { API_URLS } from "config/api/apiUrls.config";
 
-const useFetchData = (url: string, options: any = { method: "GET" }) => {
+const useFetchBeers = (page: number) => {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState<any>(null);
@@ -10,24 +11,24 @@ const useFetchData = (url: string, options: any = { method: "GET" }) => {
     (async () => {
       try {
         const response = await axios({
-          url: url,
-          ...options,
+          url: API_URLS.beers,
+          method: "GET",
+          params: {
+            page,
+          },
         });
+        setIsLoading(false);
         setData(response.data);
       } catch (e) {
         setError(e);
-      } finally {
-        setIsLoading(false);
       }
     })();
-    console.log("Fetching data");
-  }, [url, options]);
+  }, [page]);
 
   useEffect(() => {
     console.log("Re-rendered");
-  }, [url, options]);
+  }, [page]);
 
-  return { isLoading, data, error };
+  return [isLoading, data, error];
 };
-
-export default useFetchData;
+export default useFetchBeers;

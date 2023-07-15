@@ -1,5 +1,4 @@
 import { createRoot } from "react-dom/client";
-import { StrictMode } from "react";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import useThemeStore from "store/useTheme.store";
 import { RouterProvider } from "react-router-dom";
@@ -21,12 +20,12 @@ const Root = () => {
   });
 
   return (
-    <StrictMode>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <RouterProvider router={router} />
-      </ThemeProvider>
-    </StrictMode>
+    // <StrictMode>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <RouterProvider router={router} />
+    </ThemeProvider>
+    // </StrictMode>
   );
 };
 

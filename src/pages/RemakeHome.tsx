@@ -16,43 +16,47 @@ const RemakeHome = () => {
     setBeers,
     toggleSelectedBeer,
     deleteBeers,
-    removeDuplicates,
   } = useBeersStore((state) => state);
   const [viewBeers, setViewBeers] = useState<TBeer[]>([]);
   const [offset, setOffset] = useState(0);
   const [page, setPage] = useState(1);
+  const [endOfData, setEndOfData] = useState(false);
 
   useEffect(() => {
     (async () => {
-      const response = await axios.get(API_URLS.beers, {
-        params: {
-          page,
-        },
-      });
-      addBeers(response.data);
-      removeDuplicates();
+      try {
+        const response = await axios.get(API_URLS.beers, {
+          params: {
+            page,
+          },
+        });
+        if (response.data.length === 0) {
+          setEndOfData(true);
+          return;
+        }
+        if (beers.some((beer) => beer.id === response.data[0].id)) {
+          return;
+        }
+        addBeers(response.data);
+      } catch (error) {
+        console.log(error);
+      }
     })();
   }, [page]);
 
   useEffect(() => {
-    if (beers.length === 0) return;
-    console.log("Offset");
-    console.log(beers.slice(offset + 15, offset + 30));
-    if (beers.slice(offset + 15, offset + 30).length >= 15) {
-      setViewBeers(beers.slice(offset, offset + 15));
-    } else {
-      setPage((prev) => prev + 1);
+    console.log(beers.length);
+    if (beers.length !== 0) {
+      console.log(beers.length / (offset + 15));
+      if (beers.length / (offset + 15) >= 1) {
+        setViewBeers(beers.slice(offset, offset + 15));
+      } else {
+        console.log("New page");
+        console.log(beers.length / (15 * page));
+        setPage((prev) => prev + 1);
+      }
     }
-  }, [offset]);
-
-  useEffect(() => {
-    setViewBeers(beers.slice(offset, offset + 15));
-  }, [beers]);
-
-  useEffect(() => {
-    console.log("View Beers");
-    console.log(viewBeers);
-  }, [viewBeers]);
+  }, [offset, beers]);
 
   const handleDelete = () => {
     deleteBeers(selectedBeers);
@@ -96,7 +100,9 @@ const RemakeHome = () => {
       {offset > 0 && (
         <button onClick={() => setOffset(offset - 15)}>Previous</button>
       )}
-      <button onClick={() => setOffset(offset + 15)}>Next</button>
+      {!endOfData && (
+        <button onClick={() => setOffset(offset + 15)}>Next</button>
+      )}
     </div>
   );
 };
