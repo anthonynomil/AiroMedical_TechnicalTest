@@ -8,8 +8,8 @@ import BeersLayout from "components/beer/BeersLayout";
 import { TBeer } from "types/Beer.type";
 import BeersNavigationButtons from "components/ui/buttons/BeersNavigationButtons";
 import FlexContainer from "components/ui/layout/FlexContainer";
-import CenterBox from "components/ui/layout/CenterBox";
-import { CircularProgress, Typography } from "@mui/material";
+import Loading from "pages/error/Loading";
+import ErrorDefault from "pages/error/ErrorDefault";
 
 const BeerNavigation = () => {
   const { beers, addBeers, clearSelectedBeers } = useBeersStore();
@@ -52,27 +52,8 @@ const BeerNavigation = () => {
     setOffset((prev) => prev + 15);
   };
 
-  if (isLoading) {
-    return (
-      <FullBox>
-        <CenterBox>
-          <CircularProgress />
-        </CenterBox>
-      </FullBox>
-    );
-  }
-
-  if (error) {
-    return (
-      <FullBox>
-        <CenterBox>
-          <Typography variant={"h4"} color={"error"}>
-            Something went wrong! Please try again later.
-          </Typography>
-        </CenterBox>
-      </FullBox>
-    );
-  }
+  if (isLoading) return <Loading />;
+  if (error) return <ErrorDefault />;
 
   return (
     <FullBox>
