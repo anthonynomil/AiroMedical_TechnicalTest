@@ -6,6 +6,7 @@ export interface IBeersStore {
   selectedBeers: TBeer[];
 
   addBeers: (beers: TBeer[]) => void;
+  deleteBeers: (beers: TBeer[]) => void;
   toggleSelectedBeer: (beer: TBeer) => void;
   clearSelectedBeers: () => void;
 }
@@ -18,6 +19,7 @@ export interface IBeersStore {
  *  - `selectedBeers` - selected beers
  *  - `addBeers` - add beers
  *  - `toggleSelectedBeer` - toggle selected beer
+ *  - `deleteBeers` - delete beers
  *  - `clearSelectedBeers` - clear selected beers
  *
  */
@@ -29,6 +31,10 @@ const useBeersStore = create<IBeersStore>((set) => ({
   addBeers: (beers: TBeer[]) =>
     set((state) => ({
       beers: [...state.beers, ...beers],
+    })),
+  deleteBeers: (beers: TBeer[]) =>
+    set((state) => ({
+      beers: state.beers.filter((beer) => !beers.includes(beer)),
     })),
   toggleSelectedBeer: (beer: TBeer) =>
     set((state) => ({
