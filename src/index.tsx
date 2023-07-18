@@ -7,11 +7,15 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import { useEffect } from "react";
 
 const root = createRoot(document.getElementById("root")!);
 
 const Root = () => {
   const themeStore = useThemeStore((state) => state.theme);
+  useEffect(() => {
+    document.title = "AiroMedical Test";
+  });
 
   const theme = createTheme({
     palette: {
