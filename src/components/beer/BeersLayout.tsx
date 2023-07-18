@@ -20,7 +20,7 @@ const BeersLayout = ({ beers }: TBeersLayoutProps) => {
   return (
     <Grid2 container spacing={2} justifyContent={"center"}>
       {beers.map((beer) => (
-        <Grid2 xs={4} key={beer.id}>
+        <Grid2 xs={12} sm={12} md={6} lg={4} key={beer.id}>
           <BeerComponent beer={beer} />
         </Grid2>
       ))}

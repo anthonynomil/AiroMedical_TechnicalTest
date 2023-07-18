@@ -32,6 +32,12 @@ const ButtonBack = styled(IconButton)`
   left: 10px;
 `;
 
+const DescriptionGrid = styled(Grid2)`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+`;
+
 const BeerPage = () => {
   const navigate = useNavigate();
   const id = Number(useParams<{ id: string }>().id);
@@ -44,7 +50,7 @@ const BeerPage = () => {
     <FullBox>
       <Appbar />
       <FlexContainer sx={{ my: 4 }}>
-        <Grid2 container>
+        <Grid2 container spacing={2}>
           <Grid2 xs={6} display={"flex"} justifyContent={"center"}>
             <img src={beer?.image_url ?? MockUpBeer} alt={`${beer.name}`} />
           </Grid2>
@@ -63,31 +69,31 @@ const BeerPage = () => {
                 <DescriptionText>{beer?.brewers_tips}</DescriptionText>
               </BoxTitleText>
               <Grid2 container>
-                <Grid2 xs={6} display={"flex"} alignItems={"center"}>
+                <DescriptionGrid xs={12} sm={6}>
                   <DescriptionTitle>Volume :</DescriptionTitle>
                   <DescriptionText>
                     {beer.volume.value} {beer.volume.unit}
                   </DescriptionText>
-                </Grid2>
-                <Grid2 xs={6} display={"flex"} alignItems={"center"}>
-                  <DescriptionTitle>Alcohol by volume :</DescriptionTitle>
+                </DescriptionGrid>
+                <DescriptionGrid xs={12} sm={6}>
+                  <DescriptionTitle>ABV :</DescriptionTitle>
                   <DescriptionText>{beer.abv} %</DescriptionText>
-                </Grid2>
+                </DescriptionGrid>
               </Grid2>
               <Grid2 container>
-                <Grid2 xs={6} display={"flex"} alignItems={"center"}>
+                <DescriptionGrid xs={12} sm={6}>
                   <DescriptionTitle>First Brewed :</DescriptionTitle>
                   <DescriptionText>{beer.first_brewed}</DescriptionText>
-                </Grid2>
-                <Grid2 xs={6} display={"flex"} alignItems={"center"}>
+                </DescriptionGrid>
+                <DescriptionGrid xs={12} sm={6}>
                   <DescriptionTitle>Attenuation :</DescriptionTitle>
                   <DescriptionText>{beer?.attenuation_level} %</DescriptionText>
-                </Grid2>
+                </DescriptionGrid>
               </Grid2>
               <DescriptionTitle>Food pairing :</DescriptionTitle>
               <Grid2 container spacing={2}>
                 {beer.food_pairing.map((food: string, index: number) => (
-                  <Grid2 key={index} xs={4}>
+                  <Grid2 key={index} xs={12} sm={6} md={4}>
                     <Paper
                       sx={{
                         p: 2,

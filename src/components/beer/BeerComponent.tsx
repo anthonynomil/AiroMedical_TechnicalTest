@@ -4,6 +4,7 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
+  Divider,
   Stack,
   styled,
   Typography,
@@ -83,13 +84,19 @@ const BeerComponent = ({ beer }: TBeerComponentProps) => {
           src={beer?.image_url}
           sx={{ width: "auto", height: "100%", objectFit: "fill", m: "auto" }}
         />
-        <CardContent sx={{ width: "60%", height: "100%" }}>
-          <Stack spacing={3}>
+        <CardContent sx={{ width: "60%", height: "100%", overflow: "scroll" }}>
+          <Stack spacing={1}>
             <Typography variant={"h5"} color={"primary"} gutterBottom>
               {beer.name}
             </Typography>
+            <Divider />
             <Grid2 container>
-              <Grid2 xs={12} display={"flex"} alignItems={"center"}>
+              <Grid2
+                xs={12}
+                display={"flex"}
+                alignItems={"center"}
+                flexWrap={"wrap"}
+              >
                 <Typography variant={"h6"} color={"primary"} mr={2}>
                   Volume :
                 </Typography>
@@ -97,7 +104,12 @@ const BeerComponent = ({ beer }: TBeerComponentProps) => {
                   {beer.volume.value} {beer.volume.unit}
                 </Typography>
               </Grid2>
-              <Grid2 xs={12} display={"flex"} alignItems={"center"}>
+              <Grid2
+                xs={12}
+                display={"flex"}
+                alignItems={"center"}
+                flexWrap={"wrap"}
+              >
                 <Typography variant={"h6"} color={"primary"} mr={2}>
                   ABV :
                 </Typography>
